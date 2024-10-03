@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Activities - Travel Booking App</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style>
+        /* Similar styles to accommodations.html */
+
+        .activity-item {
+            border: 1px solid #ddd;
+            padding: 10px;
+            margin-bottom: 10px;
+        }
+        .activity-item img {
+            width: 100%;
+            height: auto;
+        }
+        .activity-details {
+            margin-top: 10px;
+        }
+        .activity-details h3 {
+            margin: 0;
+        }
+        .activity-details p {
+            margin: 5px 0;
+        }
+        .book-now {
+            background-color: #2196F3;
+            color: white;
+            padding: 10px;
+            text-align: center;
+            cursor: pointer;
+        }
+        .book-now:hover {
+            background-color: #0b7dda;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Activities</h1>
+    </header>
+    <nav>
+        <a href="tourist.html">Home</a>
+        <a href="accommodations.html">Accommodations</a>
+        <a href="activities.html">Activities</a>
+        <div class="welcome-message" id="welcome-message"></div>
+    </nav>
+    <main>
+        <div class="container">
+            <div id="activity-list">
+                <!-- Activity items will be injected here -->
+            </div>
+        </div>
+    </main>
+    <footer>
+        <p>&copy; 2023 Travel Booking App</p>
+    </footer>
+
+    <script>
+        // Mock data for activities
+        var activities = [
+            {
+                id: 1,
+                name: "Charyn Canyon Tour",
+                price: 50,
+                duration: "8 hours",
+                rating: 4.8,
+                image: "https://via.placeholder.com/300x200",
+                description: "Experience the grand canyon of Central Asia."
+            },
+            {
+                id: 2,
+                name: "Traditional Yurt Stay",
+                price: 70,
+                duration: "Overnight",
+                rating: 4.7,
+                image: "https://via.placeholder.com/300x200",
+                description: "Immerse yourself in nomadic culture."
+            }
+        ];
+
+        function displayActivities(list) {
+            var container = document.getElementById('activity-list');
+            container.innerHTML = '';
+            list.forEach(function(item) {
+                var div = document.createElement('div');
+                div.className = 'activity-item';
+                div.innerHTML = `
+                    <img src="${item.image}" alt="${item.name}">
+                    <div class="activity-details">
+                        <h3>${item.name}</h3>
+                        <p>Price: $${item.price}</p>
+                        <p>Duration: ${item.duration}</p>
+                        <p>Rating: ${item.rating} stars</p>
+                        <div class="book-now" onclick="viewActivityDetails(${item.id})">View Details</div>
+                    </div>
+                `;
+                container.appendChild(div);
+            });
+        }
+
+        function viewActivityDetails(id) {
+            localStorage.setItem('activityId', id);
+            window.location.href = 'activity_details.html';
+        }
+
+        window.onload = function() {
+            var username = localStorage.getItem('touristUsername');
+            if (username) {
+                document.getElementById('welcome-message').innerText = 'Welcome, ' + username;
+            }
+            displayActivities(activities);
+        };
+    </script>
+</body>
+</html>
