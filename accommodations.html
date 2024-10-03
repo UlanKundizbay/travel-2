@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Accommodations - Travel Booking App</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style>
+        /* Include previous styles */
+
+        /* Additional styles for accommodations */
+        .filter-bar {
+            margin: 20px 0;
+        }
+        .accommodation-item {
+            border: 1px solid #ddd;
+            padding: 10px;
+            margin-bottom: 10px;
+        }
+        .accommodation-item img {
+            width: 100%;
+            height: auto;
+        }
+        .accommodation-details {
+            margin-top: 10px;
+        }
+        .accommodation-details h3 {
+            margin: 0;
+        }
+        .accommodation-details p {
+            margin: 5px 0;
+        }
+        .book-now {
+            background-color: #2196F3;
+            color: white;
+            padding: 10px;
+            text-align: center;
+            cursor: pointer;
+        }
+        .book-now:hover {
+            background-color: #0b7dda;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Accommodations</h1>
+    </header>
+    <nav>
+        <a href="tourist.html">Home</a>
+        <a href="accommodations.html">Accommodations</a>
+        <a href="activities.html">Activities</a>
+        <div class="welcome-message" id="welcome-message"></div>
+    </nav>
+    <main>
+        <div class="container">
+            <div class="filter-bar">
+                <label>Price Range:</label>
+                <select id="price-filter">
+                    <option value="all">All</option>
+                    <option value="low">Under $50</option>
+                    <option value="medium">$50 - $100</option>
+                    <option value="high">Over $100</option>
+                </select>
+                <label>Type:</label>
+                <select id="type-filter">
+                    <option value="all">All</option>
+                    <option value="hotel">Hotel</option>
+                    <option value="hostel">Hostel</option>
+                    <option value="apartment">Apartment</option>
+                </select>
+                <label>Rating:</label>
+                <select id="rating-filter">
+                    <option value="all">All</option>
+                    <option value="4">4+ stars</option>
+                    <option value="3">3+ stars</option>
+                    <option value="2">2+ stars</option>
+                </select>
+                <button onclick="applyFilters()">Apply</button>
+            </div>
+            <div id="accommodation-list">
+                <!-- Accommodation items will be injected here -->
+            </div>
+        </div>
+    </main>
+    <footer>
+        <p>&copy; 2023 Travel Booking App</p>
+    </footer>
+
+    <script>
+        // Mock data for accommodations
+        var accommodations = [
+            {
+                id: 1,
+                name: "Astana Grand Hotel",
+                price: 120,
+                rating: 4.5,
+                type: "hotel",
+                image: "https://via.placeholder.com/300x200",
+                description: "A luxurious hotel in the heart of Astana."
+            },
+            {
+                id: 2,
+                name: "Almaty Cozy Hostel",
+                price: 30,
+                rating: 4.0,
+                type: "hostel",
+                image: "https://via.placeholder.com/300x200",
+                description: "Affordable accommodation in Almaty."
+            },
+            {
+                id: 3,
+                name: "Mountain View Apartment",
+                price: 80,
+                rating: 4.2,
+                type: "apartment",
+                image: "https://via.placeholder.com/300x200",
+                description: "An apartment with stunning mountain views."
+            }
+        ];
+
+        function displayAccommodations(list) {
+            var container = document.getElementById('accommodation-list');
+            container.innerHTML = '';
+            list.forEach(function(item) {
+                var div = document.createElement('div');
+                div.className = 'accommodation-item';
+                div.innerHTML = `
+                    <img src="${item.image}" alt="${item.name}">
+                    <div class="accommodation-details">
+                        <h3>${item.name}</h3>
+                        <p>Price: $${item.price} per night</p>
+                        <p>Rating: ${item.rating} stars</p>
+                        <p>Type: ${item.type.charAt(0).toUpperCase() + item.type.slice(1)}</p>
+                        <div class="book-now" onclick="viewDetails(${item.id})">View Details</div>
+                    </div>
+                `;
+                container.appendChild(div);
+            });
+        }
+
+        function applyFilters() {
+            var priceFilter = document.getElementById('price-filter').value;
+            var typeFilter = document.getElementById('type-filter').value;
+            var ratingFilter = document.getElementById('rating-filter').value;
+
+            var filtered = accommodations.filter(function(item) {
+                var priceMatch = false;
+                var typeMatch = false;
+                var ratingMatch = false;
+
+                // Price Filter
+                if (priceFilter === 'all') {
+                    priceMatch = true;
+                } else if (priceFilter === 'low' && item.price < 50) {
+                    priceMatch = true;
+                } else if (priceFilter === 'medium' && item.price >= 50 && item.price <= 100) {
+                    priceMatch = true;
+                } else if (priceFilter === 'high' && item.price > 100) {
+                    priceMatch = true;
+                }
+
+                // Type Filter
+                if (typeFilter === 'all' || typeFilter === item.type) {
+                    typeMatch = true;
+                }
+
+                // Rating Filter
+                if (ratingFilter === 'all' || item.rating >= parseInt(ratingFilter)) {
+                    ratingMatch = true;
+                }
+
+                return priceMatch && typeMatch && ratingMatch;
+            });
+
+            displayAccommodations(filtered);
+        }
+
+        function viewDetails(id) {
+            localStorage.setItem('accommodationId', id);
+            window.location.href = 'accommodation_details.html';
+        }
+
+        window.onload = function() {
+            var username = localStorage.getItem('touristUsername');
+            if (username) {
+                document.getElementById('welcome-message').innerText = 'Welcome, ' + username;
+            }
+            displayAccommodations(accommodations);
+        };
+    </script>
+</body>
+</html>
