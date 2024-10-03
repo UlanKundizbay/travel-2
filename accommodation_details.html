@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Accommodation Details - Travel Booking App</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style>
+        /* Include previous styles */
+
+        /* Additional styles for details page */
+        .image-carousel {
+            width: 100%;
+            height: 200px;
+            background-color: #ddd;
+            margin-bottom: 20px;
+        }
+        .details-section {
+            margin-bottom: 20px;
+        }
+        .book-now-button {
+            background-color: #2196F3;
+            color: white;
+            padding: 15px;
+            text-align: center;
+            cursor: pointer;
+        }
+        .book-now-button:hover {
+            background-color: #0b7dda;
+        }
+        .reviews-section {
+            margin-top: 20px;
+        }
+        .review-item {
+            border-top: 1px solid #ddd;
+            padding: 10px 0;
+        }
+        .review-item:first-child {
+            border-top: none;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Accommodation Details</h1>
+    </header>
+    <nav>
+        <a href="tourist.html">Home</a>
+        <a href="accommodations.html">Accommodations</a>
+        <a href="activities.html">Activities</a>
+        <div class="welcome-message" id="welcome-message"></div>
+    </nav>
+    <main>
+        <div class="container">
+            <div class="image-carousel">
+                <!-- Placeholder for image carousel -->
+                <img id="accommodation-image" src="" alt="Accommodation Image" style="width:100%; height:100%;">
+            </div>
+            <div class="details-section">
+                <h2 id="accommodation-name"></h2>
+                <p id="accommodation-description"></p>
+                <p>Amenities: Free Wi-Fi, Breakfast included, Pool</p>
+            </div>
+            <div class="book-now-button" onclick="bookNow()">Book Now</div>
+            <div class="reviews-section">
+                <h3>Reviews</h3>
+                <div class="review-item">
+                    <strong>John Doe:</strong>
+                    <p>Great place to stay! Highly recommended.</p>
+                </div>
+                <div class="review-item">
+                    <strong>Jane Smith:</strong>
+                    <p>Comfortable and clean. Excellent service.</p>
+                </div>
+            </div>
+        </div>
+    </main>
+    <footer>
+        <p>&copy; 2023 Travel Booking App</p>
+    </footer>
+
+    <script>
+        // Mock data (should be same as in accommodations.html)
+        var accommodations = [
+            {
+                id: 1,
+                name: "Astana Grand Hotel",
+                price: 120,
+                rating: 4.5,
+                type: "hotel",
+                image: "https://via.placeholder.com/300x200",
+                description: "A luxurious hotel in the heart of Astana."
+            },
+            {
+                id: 2,
+                name: "Almaty Cozy Hostel",
+                price: 30,
+                rating: 4.0,
+                type: "hostel",
+                image: "https://via.placeholder.com/300x200",
+                description: "Affordable accommodation in Almaty."
+            },
+            {
+                id: 3,
+                name: "Mountain View Apartment",
+                price: 80,
+                rating: 4.2,
+                type: "apartment",
+                image: "https://via.placeholder.com/300x200",
+                description: "An apartment with stunning mountain views."
+            }
+        ];
+
+        function loadAccommodationDetails() {
+            var id = localStorage.getItem('accommodationId');
+            var accommodation = accommodations.find(function(item) {
+                return item.id == id;
+            });
+
+            if (accommodation) {
+                document.getElementById('accommodation-image').src = accommodation.image;
+                document.getElementById('accommodation-name').innerText = accommodation.name;
+                document.getElementById('accommodation-description').innerText = accommodation.description;
+            } else {
+                alert('Accommodation not found.');
+            }
+        }
+
+        function bookNow() {
+            alert('Booking functionality is mocked.');
+        }
+
+        window.onload = function() {
+            var username = localStorage.getItem('touristUsername');
+            if (username) {
+                document.getElementById('welcome-message').innerText = 'Welcome, ' + username;
+            }
+            loadAccommodationDetails();
+        };
+    </script>
+</body>
+</html>
