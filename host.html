@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Host Dashboard - Travel Booking App</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style>
+        /* Include previous styles */
+
+        .dashboard-menu {
+            margin: 20px 0;
+        }
+        .dashboard-menu button {
+            padding: 10px;
+            margin-right: 10px;
+        }
+        .listing-item {
+            border: 1px solid #ddd;
+            padding: 10px;
+            margin-bottom: 10px;
+        }
+        .listing-item h3 {
+            margin: 0;
+        }
+        .listing-stats {
+            margin: 10px 0;
+        }
+        .listing-actions button {
+            padding: 5px;
+            margin-right: 5px;
+        }
+        .bookings-section, .reviews-section {
+            margin-top: 20px;
+        }
+        .booking-item, .review-item {
+            border-top: 1px solid #ddd;
+            padding: 10px 0;
+        }
+        .booking-item:first-child, .review-item:first-child {
+            border-top: none;
+        }
+        /* Modal styles */
+        #listing-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.5);
+        }
+        #listing-modal-content {
+            background-color: white;
+            margin: 5% auto;
+            padding: 20px;
+            width: 80%;
+            max-width: 500px;
+        }
+        #listing-modal input, #listing-modal textarea {
+            width: 100%;
+            margin-bottom: 10px;
+            padding: 8px;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Host Dashboard</h1>
+    </header>
+    <nav>
+        <a href="index.html">Home</a>
+        <a href="#" onclick="showAddListing()">Add New Listing</a>
+        <a href="#" onclick="logout()">Logout</a>
+        <div class="welcome-message" id="welcome-message"></div>
+    </nav>
+    <main>
+        <div class="container">
+            <h2>Your Listings</h2>
+            <div id="listings">
+                <!-- Listings will be injected here -->
+            </div>
+            <div class="bookings-section">
+                <h2>Upcoming Bookings</h2>
+                <div id="bookings">
+                    <!-- Bookings will be injected here -->
+                </div>
+            </div>
+            <div class="reviews-section">
+                <h2>Reviews</h2>
+                <div id="reviews">
+                    <!-- Reviews will be injected here -->
+                </div>
+            </div>
+        </div>
+    </main>
+    <footer>
+        <p>&copy; 2023 Travel Booking App</p>
+    </footer>
+
+    <!-- Add/Edit Listing Modal -->
+    <div id="listing-modal">
+        <div id="listing-modal-content">
+            <h2 id="modal-title">Add New Listing</h2>
+            <input type="text" id="listing-name" placeholder="Name">
+            <textarea id="listing-description" placeholder="Description"></textarea>
+            <input type="number" id="listing-price" placeholder="Price">
+            <input type="text" id="listing-type" placeholder="Type (Accommodation/Activity)">
+            <button onclick="saveListing()">Save</button>
+            <button onclick="closeListingModal()">Cancel</button>
+        </div>
+    </div>
+
+    <script>
+        var hostName = localStorage.getItem('hostName') || 'Host';
+
+        function showAddListing() {
+            document.getElementById('listing-modal').style.display = 'block';
+        }
+
+        function closeListingModal() {
+            document.getElementById('listing-modal').style.display = 'none';
+        }
+
+        function saveListing() {
+            alert('Listing saved (mocked).');
+            closeListingModal();
+            loadListings();
+        }
+
+        function loadListings() {
+            // Mock data for listings
+            var listings = [
+                {
+                    id: 1,
+                    name: "My Apartment",
+                    type: "Accommodation",
+                    bookings: 5,
+                    rating: 4.5,
+                    reviews: 2
+                },
+                {
+                    id: 2,
+                    name: "City Tour",
+                    type: "Activity",
+                    bookings: 8,
+                    rating: 4.8,
+                    reviews: 3
+                }
+            ];
+
+            var listingsContainer = document.getElementById('listings');
+            listingsContainer.innerHTML = '';
+            listings.forEach(function(listing) {
+                var div = document.createElement('div');
+                div.className = 'listing-item';
+                div.innerHTML = `
+                    <h3>${listing.name}</h3>
+                    <p>Type: ${listing.type}</p>
+                    <div class="listing-stats">
+                        <p>Bookings: ${listing.bookings}</p>
+                        <p>Rating: ${listing.rating}</p>
+                        <p>Reviews: ${listing.reviews}</p>
+                    </div>
+                    <div class="listing-actions">
+                        <button onclick="editListing(${listing.id})">Edit</button>
+                        <button onclick="deleteListing(${listing.id})">Delete</button>
+                    </div>
+                `;
+                listingsContainer.appendChild(div);
+            });
+        }
+
+        function editListing(id) {
+            alert('Edit listing (mocked).');
+        }
+
+        function deleteListing(id) {
+            if (confirm('Are you sure you want to delete this listing?')) {
+                alert('Listing deleted (mocked).');
+                loadListings();
+            }
+        }
+
+        function loadBookings() {
+            // Mock data for bookings
+            var bookings = [
+                {
+                    guestName: "Alice",
+                    dates: "2023-11-01 to 2023-11-05",
+                    contact: "alice@example.com"
+                },
+                {
+                    guestName: "Bob",
+                    dates: "2023-11-10 to 2023-11-12",
+                    contact: "bob@example.com"
+                }
+            ];
+
+            var bookingsContainer = document.getElementById('bookings');
+            bookingsContainer.innerHTML = '';
+            bookings.forEach(function(booking) {
+                var div = document.createElement('div');
+                div.className = 'booking-item';
+                div.innerHTML = `
+                    <p><strong>${booking.guestName}</strong></p>
+                    <p>Dates: ${booking.dates}</p>
+                    <p>Contact: ${booking.contact}</p>
+                    <button onclick="confirmBooking()">Confirm</button>
+                    <button onclick="cancelBooking()">Cancel</button>
+                `;
+                bookingsContainer.appendChild(div);
+            });
+        }
+
+        function confirmBooking() {
+            alert('Booking confirmed (mocked).');
+        }
+
+        function cancelBooking() {
+            if (confirm('Are you sure you want to cancel this booking?')) {
+                alert('Booking canceled (mocked).');
+            }
+        }
+
+        function loadReviews() {
+            // Mock data for reviews
+            var reviews = [
+                {
+                    guestName: "Charlie",
+                    comment: "Great experience!"
+                },
+                {
+                    guestName: "Dana",
+                    comment: "Very comfortable stay."
+                }
+            ];
+
+            var reviewsContainer = document.getElementById('reviews');
+            reviewsContainer.innerHTML = '';
+            reviews.forEach(function(review) {
+                var div = document.createElement('div');
+                div.className = 'review-item';
+                div.innerHTML = `
+                    <p><strong>${review.guestName}:</strong></p>
+                    <p>${review.comment}</p>
+                    <button onclick="respondToReview()">Respond</button>
+                `;
+                reviewsContainer.appendChild(div);
+            });
+        }
+
+        function respondToReview() {
+            alert('Response sent (mocked).');
+        }
+
+        function logout() {
+            localStorage.removeItem('hostName');
+            window.location.href = 'index.html';
+        }
+
+        window.onload = function() {
+            document.getElementById('welcome-message').innerText = 'Logged in as ' + hostName;
+            loadListings();
+            loadBookings();
+            loadReviews();
+        };
+    </script>
+</body>
+</html>
